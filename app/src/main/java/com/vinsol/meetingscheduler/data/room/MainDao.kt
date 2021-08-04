@@ -14,7 +14,7 @@ interface MainDao {
     suspend fun updateApiResponseItemIntoDb(apiResponseItem: ApiResponseItem)
 
     @Query("SELECT * FROM meeting_table")
-    fun getAllApiResponseItemsFromDb(): Flow<ApiResponseItem>
+    fun getAllApiResponseItemsFromDb(): Flow<List<ApiResponseItem>>
 
     @Query("DELETE FROM meeting_table")
     suspend fun deleteAllResponseItems()
