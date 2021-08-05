@@ -38,10 +38,6 @@ constructor(
     val currentLocalDate: LiveData<LocalDate>
         get() = _currentLocalDate
 
-    val userSelectedDate = MutableSharedFlow<String>()
-    val userSelectedStartTime = MutableSharedFlow<String>()
-    val userSelectedEndTime = MutableSharedFlow<String>()
-
     fun getCurrentDate() : LocalDate {
         val currentLocalDate = repository.getCurrentDate()
         Log.d(TAG, "currentLocalDate: $currentLocalDate")
@@ -74,6 +70,14 @@ constructor(
             }
         }
     }
+
+    suspend fun getSingleItemForSelectedDate(date: String) = repository.getSingleItemForSelectedDate(date)
+
+    suspend fun updateApiResponseItemWithDateIntoDb(apiResponseItemWithDate: ApiResponseItemWithDate) = repository.updateApiResponseItemWithDateIntoDb(apiResponseItemWithDate)
+
+    suspend fun fetchItemsForSelectedDate(date: String) = repository.getItemsForSelectedDate(date)
+
+    suspend fun insertApiResponseItemWithDateIntoDb(apiResponseItemWithDate: ApiResponseItemWithDate) = repository.insertApiResponseItemWithDateIntoDb(apiResponseItemWithDate)
 
     companion object {
         private const val TAG = "MainViewModelTAG"

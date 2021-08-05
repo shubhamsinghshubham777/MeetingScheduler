@@ -28,3 +28,5 @@ fun Context.shortSimpleToast(msg: String) {
 fun Context.longSimpleToast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
 }
+
+fun String.fromTimeToInt() = replace(":", "").toInt()

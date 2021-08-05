@@ -43,4 +43,10 @@ constructor(
         return dao.getItemsForSelectedDate(date)
     }
 
+    suspend fun getSingleItemForSelectedDate(date: String) = dao.getSingleItemForSelectedDate(date)
+
+    suspend fun updateApiResponseItemWithDateIntoDb(apiResponseItemWithDate: ApiResponseItemWithDate) = dao.updateApiResponseItemWithDateIntoDb(apiResponseItemWithDate)
+
+    suspend fun insertApiResponseItemWithDateIntoDb(apiResponseItemWithDate: ApiResponseItemWithDate) = dao.insertApiResponseItemWithDateIntoDb(apiResponseItemWithDate)
+
 }

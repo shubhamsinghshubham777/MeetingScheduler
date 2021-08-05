@@ -1,11 +1,12 @@
 package com.vinsol.meetingscheduler.views.fragments.interfaces
 
-import androidx.navigation.NavController
+import com.vinsol.meetingscheduler.views.fragments.controllers.ScheduleMeetingFragmentController
 
 interface ScheduleMeetingClickEvents {
 
-    fun showDatePicker()
-    fun showTimePicker(whichTime: String)
-    fun submitButtonOnClicked(navController: NavController)
+    fun showDatePicker(epoxyController: ScheduleMeetingFragmentController)
+    fun showTimePicker(whichTime: String, epoxyController: ScheduleMeetingFragmentController)
+    fun submitButtonOnClicked(epoxyController: ScheduleMeetingFragmentController)
+    suspend fun checkIfTimeSlotExists(epoxyController: ScheduleMeetingFragmentController): Boolean?
 
 }
