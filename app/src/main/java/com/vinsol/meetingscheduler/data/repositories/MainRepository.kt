@@ -22,22 +22,6 @@ constructor(
         private const val TAG = "MainRepositoryTAG"
     }
 
-    suspend fun getFlowOfApiResponseItemsFromDb(date: String?): Flow<List<ApiResponseItemWithDate>> {
-
-        if (date == null) {
-            val currentDateTime = getCurrentDate().toReadableDate()
-            currentDateTime.let {
-                Log.d(TAG, "Generated Date is: $it")
-                getResponseFromApiAndInsertIntoDb(it)
-            }
-        } else {
-            getResponseFromApiAndInsertIntoDb(date)
-        }
-
-
-        return dao.getApiResponseItemsWithDatesFromDb()
-    }
-
     fun getCurrentDate(): LocalDate {
         val currentDate = DateTime().toLocalDate()
         Log.d(TAG, "getCurrentDate: $currentDate")
@@ -54,6 +38,11 @@ constructor(
 
     private suspend fun getResponseFromApiAndInsertIntoDb(date: String) {
         dao.insertApiResponseItemWithDateIntoDb(ApiResponseItemWithDate(date, apiService.getSchedule(date)))
+    }
+
+    suspend fun getItemsForSelectedDate(date: String): Flow<List<ApiResponseItemWithDate>> {
+        getResponseFromApiAndInsertIntoDb(date)
+        return dao.getItemsForSelectedDate(date)
     }
 
 }

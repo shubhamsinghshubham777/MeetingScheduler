@@ -26,7 +26,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         mainViewModel.apply {
-            getFlowOfApiResponseItemsFromDb(null)
+            getItemsForSelectedDate(getCurrentDate().toReadableDate())
 
             val epoxyController = HomeFragmentController()
 
@@ -37,9 +37,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 currentLocalDate.observe(viewLifecycleOwner) {
                     it?.let { currentDate ->
                         homeFragTopBarBackBtnRightIv.setOnClickListener {
+                            homeFragEpoxyRecyclerView.recycledViewPool.clear()
                             Log.d(TAG, "on next button pressed: ${incrementDate(currentDate)}")
                         }
                         homeFragTopBarBackBtnLeftIv.setOnClickListener {
+                            homeFragEpoxyRecyclerView.recycledViewPool.clear()
                             Log.d(TAG, "on previous button pressed: ${decrementDate(currentDate)}")
                         }
                     }
@@ -57,9 +59,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             loadingState.observe(viewLifecycleOwner) {
                 epoxyController.isLoading = it
             }
-
-            //Initialise currentLocalDate LiveData
-            getCurrentDate()
 
             currentLocalDate.observe(viewLifecycleOwner) {
 

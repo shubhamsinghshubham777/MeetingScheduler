@@ -35,14 +35,12 @@ class HomeFragmentController: EpoxyController() {
 
         if (isLoading) {
             LoadingScreenModel().id("loading_state").addTo(this)
-            Log.d(TAG, "Loader has been displayed on screen")
             return
         }
 
         listOfApiResponseItems.forEach {
             it.apiResponseItem.forEach { apiResponseItem ->
-                ItemApiResponseModel(apiResponseItem.startTime, apiResponseItem.endTime, apiResponseItem.description).id(apiResponseItem.description).addTo(this)
-                Log.d(TAG, "List has been displayed on screen")
+                ItemApiResponseModel(apiResponseItem.startTime, apiResponseItem.endTime, apiResponseItem.description).id(it.date).addTo(this)
             }
 
         }
