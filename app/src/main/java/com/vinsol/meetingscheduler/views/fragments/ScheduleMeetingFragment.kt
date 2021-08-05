@@ -7,7 +7,6 @@ import android.viewbinding.library.fragment.viewBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.airbnb.epoxy.EpoxyController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -15,17 +14,19 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.FragmentScheduleMeetingBinding
+import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
+import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.fromTimeToInt
 import com.vinsol.meetingscheduler.utils.shortSimpleToast
 import com.vinsol.meetingscheduler.views.fragments.controllers.ScheduleMeetingFragmentController
 import com.vinsol.meetingscheduler.views.fragments.interfaces.ScheduleMeetingClickEvents
-import kotlinx.coroutines.flow.collectLatest
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting), ScheduleMeetingClickEvents {
 
     private val binding: FragmentScheduleMeetingBinding by viewBinding()
+    private var localUserDescription = String()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -115,7 +116,16 @@ class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting)
         lifecycleScope.launchWhenResumed {
             checkIfTimeSlotExists(epoxyController)?.let {
                 if (it) {
-                    requireActivity().shortSimpleToast("Slot is available!")
+                    val updatedItem = mainViewModel.getSingleItemForSelectedDate(epoxyController.userPickedDate).copy()
+                    val updatedList = updatedItem.apiResponseItem.toMutableList()
+                    val newApiResponseItem = ApiResponseItem(localUserDescription, epoxyController.userPickedEndTime, listOf(), epoxyController.userPickedStartTime)
+                    updatedList.add(newApiResponseItem)
+                    val newItem = ApiResponseItemWithDate(updatedItem.date, updatedList.toList())
+                    if (localUserDescription.isNotBlank()) {
+                        mainViewModel.updateApiResponseItemWithDateIntoDb(newItem)
+                        requireActivity().shortSimpleToast("Task added successfully!")
+                        findNavController().navigateUp()
+                    }
                 } else {
                     requireActivity().shortSimpleToast("Slot not available!")
                 }
@@ -133,10 +143,15 @@ class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting)
 
             Log.d(TAG, "checkIfTimeSlotExists: $userPickedStartTimeInt\t$userPickedEndTimeInt\t$itemStartTimeInt\t$itemEndTimeInt")
 
-            return !(userPickedStartTimeInt in itemStartTimeInt until(itemEndTimeInt) || userPickedEndTimeInt in itemStartTimeInt until(itemEndTimeInt))
+            if (userPickedStartTimeInt in itemStartTimeInt until(itemEndTimeInt) || userPickedEndTimeInt in itemStartTimeInt until(itemEndTimeInt)) {
+                return false
+            }
         }
+        return true
+    }
 
-        return null
+    override fun getUserDescriptionValue(description: String) {
+        localUserDescription = description
     }
 
     companion object {

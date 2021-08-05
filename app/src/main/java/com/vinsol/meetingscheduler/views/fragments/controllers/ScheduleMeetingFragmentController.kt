@@ -1,5 +1,6 @@
 package com.vinsol.meetingscheduler.views.fragments.controllers
 
+import android.util.Log
 import androidx.core.widget.doOnTextChanged
 import com.airbnb.epoxy.EpoxyController
 import com.vinsol.meetingscheduler.R
@@ -36,7 +37,13 @@ class ScheduleMeetingFragmentController(
             }
         }
 
-    var userDescription = String()
+    var userDescription: String = String()
+        set(value) {
+            field = value
+            if (field.isNotBlank()) {
+                Log.d(TAG, "UserDescription is changed!")
+            }
+        }
 
     override fun buildModels() {
         MeetingSelectableItem("Meeting Date", scheduleMeetingClickEvents, "meeting_date", userPickedDate, this).id("meeting_date").addTo(this)
@@ -73,7 +80,7 @@ class ScheduleMeetingFragmentController(
         }
     }
 
-    class MeetingDescriptionItem(
+    data class MeetingDescriptionItem(
         private var userDescription: String,
         private val scheduleMeetingClickEvents: ScheduleMeetingClickEvents,
         private val scheduleMeetingFragmentController: ScheduleMeetingFragmentController
@@ -85,6 +92,7 @@ class ScheduleMeetingFragmentController(
 
             meetingFragDescriptionEt.doOnTextChanged { text, _, _, _ ->
                 userDescription = text.toString()
+                scheduleMeetingClickEvents.getUserDescriptionValue(userDescription)
             }
         }
 
