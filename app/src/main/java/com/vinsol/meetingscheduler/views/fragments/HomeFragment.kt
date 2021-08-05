@@ -2,16 +2,14 @@ package com.vinsol.meetingscheduler.views.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.viewbinding.library.fragment.viewBinding
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.FragmentHomeBinding
-import com.vinsol.meetingscheduler.viewmodels.MainViewModel
+import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
+import com.vinsol.meetingscheduler.views.fragments.controllers.HomeFragmentController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
@@ -27,12 +25,18 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         mainViewModel.getFlowOfApiResponseItemsFromDb(null)
 
+        val epoxyController = HomeFragmentController()
+        binding.homeFragEpoxyRecyclerView.setController(epoxyController)
+        binding.homeFragEpoxyRecyclerView.adapter = epoxyController.adapter
+
         mainViewModel.listOfApiResponseItems.observe(viewLifecycleOwner) {
             it?.let { listOfApiResponseItem ->
-                listOfApiResponseItem.forEachIndexed { index, apiResponseItem ->
-                    Log.d(TAG, "Item$index is $apiResponseItem")
-                }
+                epoxyController.listOfApiResponseItems = listOfApiResponseItem as ArrayList<ApiResponseItem>
             }
+        }
+
+        mainViewModel.loadingState.observe(viewLifecycleOwner) {
+            epoxyController.isLoading = it
         }
     }
 

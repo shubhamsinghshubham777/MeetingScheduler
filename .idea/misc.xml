@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/shubham/AndroidStudioProjects/MeetingScheduler/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Users/shubham/AndroidStudioProjects/MeetingScheduler/app/src/main/res/layout/fragment_home.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/shubham/AndroidStudioProjects/MeetingScheduler/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Users/shubham/AndroidStudioProjects/MeetingScheduler/app/src/main/res/layout/item_apiresponse.xml" value="0.33" />
+        <entry key="..\:/Users/shubham/AndroidStudioProjects/MeetingScheduler/app/src/main/res/layout/loading_screen.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
