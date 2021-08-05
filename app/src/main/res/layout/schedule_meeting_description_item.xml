@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/meetingFrag_description_til"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        app:hintEnabled="false"
+        android:textColorHint="@color/hint_color"
+        app:boxCornerRadiusBottomEnd="@dimen/meeting_item_corner_radius"
+        app:boxCornerRadiusBottomStart="@dimen/meeting_item_corner_radius"
+        app:boxCornerRadiusTopEnd="@dimen/meeting_item_corner_radius"
+        app:boxCornerRadiusTopStart="@dimen/meeting_item_corner_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/meetingFrag_description_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:hint="Description"
+            android:minLines="3"
+            android:textSize="@dimen/meeting_item_text_size"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/meetingFrag_submit_btn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="32dp"
+        android:text="SUBMIT"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold"
+        app:cornerRadius="@dimen/button_corner_radius"
+        app:layout_constraintEnd_toEndOf="@+id/meetingFrag_description_til"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/meetingFrag_description_til"
+        app:layout_constraintTop_toBottomOf="@+id/meetingFrag_description_til" />
+</androidx.constraintlayout.widget.ConstraintLayout>

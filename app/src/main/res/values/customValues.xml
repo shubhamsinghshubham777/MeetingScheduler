@@ -2,6 +2,13 @@
 <resources>
     <dimen name="time_text_size">12sp</dimen>
     <dimen name="arrow_text_size">16sp</dimen>
+    <dimen name="topBar_elevation">16sp</dimen>
+    <dimen name="topBar_title_text_size">20sp</dimen>
+    <dimen name="meeting_item_corner_radius">8dp</dimen>
+    <dimen name="button_corner_radius">8dp</dimen>
+    <dimen name="button_height">64dp</dimen>
+    <dimen name="button_text_size">15sp</dimen>
+    <dimen name="meeting_item_text_size">18sp</dimen>
     <dimen name="item_description_size">16sp</dimen>
     <attr name="dividerColor">#d1d1d1</attr>
 </resources>

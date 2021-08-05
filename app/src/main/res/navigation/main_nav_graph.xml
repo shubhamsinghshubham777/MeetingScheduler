@@ -9,5 +9,14 @@
         android:id="@+id/homeFragment"
         android:name="com.vinsol.meetingscheduler.views.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_scheduleMeetingFragment"
+            app:destination="@id/scheduleMeetingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scheduleMeetingFragment"
+        android:name="com.vinsol.meetingscheduler.views.fragments.ScheduleMeetingFragment"
+        android:label="fragment_schedule_meeting"
+        tools:layout="@layout/fragment_schedule_meeting" />
 </navigation>

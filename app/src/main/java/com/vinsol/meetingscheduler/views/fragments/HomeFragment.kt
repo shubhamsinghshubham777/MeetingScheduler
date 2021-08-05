@@ -3,6 +3,7 @@ package com.vinsol.meetingscheduler.views.fragments
 import android.os.Bundle
 import android.view.View
 import android.viewbinding.library.fragment.viewBinding
+import androidx.navigation.fragment.findNavController
 import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.FragmentHomeBinding
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
@@ -32,6 +33,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 homeFragEpoxyRecyclerView.setController(epoxyController)
                 homeFragEpoxyRecyclerView.adapter = epoxyController.adapter
                 setupTopBar(mainViewModel, binding)
+                homeFragScheduleBtn.setOnClickListener {
+                    val action = HomeFragmentDirections.actionHomeFragmentToScheduleMeetingFragment()
+                    findNavController().navigate(action)
+                }
             }
 
             listOfApiResponseItems.observe(viewLifecycleOwner) {

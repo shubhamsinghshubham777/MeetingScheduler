@@ -12,4 +12,5 @@
     <color name="brand_primary_dark">#007159</color>
     <color name="card_background_color">#eeeeee</color>
     <color name="divider_color">#d1d1d1</color>
+    <color name="hint_color">#b1b1b1</color>
 </resources>
