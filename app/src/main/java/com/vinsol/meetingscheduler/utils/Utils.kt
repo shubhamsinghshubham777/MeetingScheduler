@@ -2,6 +2,7 @@ package com.vinsol.meetingscheduler.utils
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonReader
+import org.joda.time.LocalDate
 
 object NullToEmptyStringAdapter {
     @FromJson
@@ -12,4 +13,8 @@ object NullToEmptyStringAdapter {
         reader.nextNull<Unit>()
         return ""
     }
+}
+
+fun LocalDate.toReadableDate(): String {
+    return this.toString("dd/MM/yyyy")
 }

@@ -4,9 +4,10 @@ import android.util.Log
 import com.vinsol.meetingscheduler.data.retrofit.ApiService
 import com.vinsol.meetingscheduler.data.room.MainDao
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
+import com.vinsol.meetingscheduler.utils.toReadableDate
 import kotlinx.coroutines.flow.Flow
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.format.DateTimeFormatter
+import org.joda.time.DateTime
+import org.joda.time.LocalDate
 import javax.inject.Inject
 
 class MainRepository
@@ -23,8 +24,8 @@ constructor(
     suspend fun getFlowOfApiResponseItemsFromDb(date: String?): Flow<List<ApiResponseItem>> {
 
         if (date == null) {
-            val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-            currentDateTime?.let {
+            val currentDateTime = getCurrentDate().toReadableDate()
+            currentDateTime.let {
                 Log.d(TAG, "Generated Date is: $it")
                 getResponseFromApiAndInsertIntoDb(it)
             }
@@ -34,6 +35,20 @@ constructor(
 
 
         return dao.getAllApiResponseItemsFromDb()
+    }
+
+    fun getCurrentDate(): LocalDate {
+        val currentDate = DateTime().toLocalDate()
+        Log.d(TAG, "getCurrentDate: $currentDate")
+        return currentDate
+    }
+
+    fun incrementDate(localDate: LocalDate): LocalDate {
+        return localDate.plusDays(1)
+    }
+
+    fun decrementDate(localDate: LocalDate): LocalDate {
+        return localDate.minusDays(1)
     }
 
     private suspend fun getResponseFromApiAndInsertIntoDb(date: String) {
