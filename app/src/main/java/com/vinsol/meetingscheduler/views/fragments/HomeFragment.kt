@@ -1,17 +1,15 @@
 package com.vinsol.meetingscheduler.views.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.viewbinding.library.fragment.viewBinding
 import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.FragmentHomeBinding
-import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.toReadableDate
+import com.vinsol.meetingscheduler.viewmodels.MainViewModel
 import com.vinsol.meetingscheduler.views.fragments.controllers.HomeFragmentController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
@@ -33,21 +31,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             binding.apply {
                 homeFragEpoxyRecyclerView.setController(epoxyController)
                 homeFragEpoxyRecyclerView.adapter = epoxyController.adapter
-
-                currentLocalDate.observe(viewLifecycleOwner) {
-                    it?.let { currentDate ->
-                        homeFragTopBarBackBtnRightIv.setOnClickListener {
-                            homeFragEpoxyRecyclerView.recycledViewPool.clear()
-                            Log.d(TAG, "on next button pressed: ${incrementDate(currentDate)}")
-                        }
-                        homeFragTopBarBackBtnLeftIv.setOnClickListener {
-                            homeFragEpoxyRecyclerView.recycledViewPool.clear()
-                            Log.d(TAG, "on previous button pressed: ${decrementDate(currentDate)}")
-                        }
-                    }
-
-                    homeFragTopBarDateTv.text = it.toReadableDate()
-                }
+                setupTopBar(mainViewModel, binding)
             }
 
             listOfApiResponseItems.observe(viewLifecycleOwner) {
@@ -62,6 +46,33 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
             currentLocalDate.observe(viewLifecycleOwner) {
 
+            }
+        }
+    }
+
+    private fun setupTopBar(
+        mainViewModel: MainViewModel,
+        fragmentHomeBinding: FragmentHomeBinding
+    ) {
+        fragmentHomeBinding.apply {
+            mainViewModel.apply {
+                currentLocalDate.observe(viewLifecycleOwner) {
+                    it?.let { currentDate ->
+                        homeFragTopBarBackBtnRightIv.setOnClickListener {
+                            incrementDate(currentDate)
+                        }
+                        homeFragTopBarNextTv.setOnClickListener {
+                            homeFragTopBarBackBtnRightIv.performClick()
+                        }
+                        homeFragTopBarBackBtnLeftIv.setOnClickListener {
+                            decrementDate(currentDate)
+                        }
+                        homeFragTopBarPrevTv.setOnClickListener {
+                            homeFragTopBarBackBtnLeftIv.performClick()
+                        }
+                    }
+                    homeFragTopBarDateTv.text = it.toReadableDate()
+                }
             }
         }
     }

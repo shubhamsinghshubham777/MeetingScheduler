@@ -39,7 +39,9 @@ class HomeFragmentController: EpoxyController() {
         }
 
         listOfApiResponseItems.forEach {
-            it.apiResponseItem.forEach { apiResponseItem ->
+            it.apiResponseItem.sortedBy { item ->
+                item.startTime.replace(":", "")
+            }.forEach { apiResponseItem ->
                 ItemApiResponseModel(apiResponseItem.startTime, apiResponseItem.endTime, apiResponseItem.description).id(it.date).addTo(this)
             }
 

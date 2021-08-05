@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="time_text_size">12sp</dimen>
+    <dimen name="arrow_text_size">16sp</dimen>
     <dimen name="item_description_size">16sp</dimen>
     <attr name="dividerColor">#d1d1d1</attr>
 </resources>
