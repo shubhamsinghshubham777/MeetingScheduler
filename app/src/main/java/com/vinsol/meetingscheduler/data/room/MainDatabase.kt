@@ -5,10 +5,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseConverters
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
+import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
+import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseWithDateConverters
 
-@Database(entities = [ApiResponseItem::class], version = 1, exportSchema = true)
+@Database(entities = [
+    ApiResponseItemWithDate::class], version = 1, exportSchema = true)
 @TypeConverters(
-    ApiResponseConverters::class
+    ApiResponseConverters::class,
+    ApiResponseWithDateConverters::class
 )
 abstract class MainDatabase: RoomDatabase() {
 

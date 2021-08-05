@@ -7,6 +7,7 @@ import android.viewbinding.library.fragment.viewBinding
 import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.FragmentHomeBinding
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
+import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.toReadableDate
 import com.vinsol.meetingscheduler.views.fragments.controllers.HomeFragmentController
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +50,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
             listOfApiResponseItems.observe(viewLifecycleOwner) {
                 it?.let { listOfApiResponseItem ->
-                    epoxyController.listOfApiResponseItems = listOfApiResponseItem as ArrayList<ApiResponseItem>
+                    epoxyController.listOfApiResponseItems = listOfApiResponseItem as ArrayList<ApiResponseItemWithDate>
                 }
             }
 

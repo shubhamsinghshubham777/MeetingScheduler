@@ -6,6 +6,7 @@ import com.airbnb.epoxy.EpoxyController
 import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.ItemApiresponseBinding
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
+import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.ViewBindingKotlinModel
 import com.vinsol.meetingscheduler.views.common.LoadingScreenModel
 
@@ -23,7 +24,7 @@ class HomeFragmentController: EpoxyController() {
             }
         }
 
-    var listOfApiResponseItems = ArrayList<ApiResponseItem>()
+    var listOfApiResponseItems = ArrayList<ApiResponseItemWithDate>()
         set(value) {
             field = value
             isLoading = false
@@ -39,8 +40,11 @@ class HomeFragmentController: EpoxyController() {
         }
 
         listOfApiResponseItems.forEach {
-            ItemApiResponseModel(it.startTime, it.endTime, it.description).id(it.description).addTo(this)
-            Log.d(TAG, "List has been displayed on screen")
+            it.apiResponseItem.forEach { apiResponseItem ->
+                ItemApiResponseModel(apiResponseItem.startTime, apiResponseItem.endTime, apiResponseItem.description).id(apiResponseItem.description).addTo(this)
+                Log.d(TAG, "List has been displayed on screen")
+            }
+
         }
     }
 

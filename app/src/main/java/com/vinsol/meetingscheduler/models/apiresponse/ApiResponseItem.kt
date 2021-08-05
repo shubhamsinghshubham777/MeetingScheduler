@@ -1,19 +1,13 @@
 package com.vinsol.meetingscheduler.models.apiresponse
 
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.vinsol.meetingscheduler.utils.NullToEmptyStringAdapter
-import javax.inject.Inject
 
-@Entity(tableName = "meeting_table")
 @JsonClass(generateAdapter = true)
 data class ApiResponseItem(
-    @PrimaryKey
     @Json(name = "description")
     val description: String,
     @Json(name = "end_time")

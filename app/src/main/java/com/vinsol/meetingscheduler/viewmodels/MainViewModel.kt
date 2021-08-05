@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.vinsol.meetingscheduler.data.repositories.MainRepository
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
+import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.toReadableDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -23,8 +24,8 @@ constructor(
     private val repository: MainRepository
 ): AndroidViewModel(application) {
 
-    private val _listOfApiResponseItems = MutableLiveData<List<ApiResponseItem>>()
-    val listOfApiResponseItems: LiveData<List<ApiResponseItem>>
+    private val _listOfApiResponseItems = MutableLiveData<List<ApiResponseItemWithDate>>()
+    val listOfApiResponseItems: LiveData<List<ApiResponseItemWithDate>>
         get() = _listOfApiResponseItems
 
     private val _loadingState = MutableLiveData(true)

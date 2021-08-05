@@ -4,6 +4,7 @@ import android.util.Log
 import com.vinsol.meetingscheduler.data.retrofit.ApiService
 import com.vinsol.meetingscheduler.data.room.MainDao
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
+import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.toReadableDate
 import kotlinx.coroutines.flow.Flow
 import org.joda.time.DateTime
@@ -21,7 +22,7 @@ constructor(
         private const val TAG = "MainRepositoryTAG"
     }
 
-    suspend fun getFlowOfApiResponseItemsFromDb(date: String?): Flow<List<ApiResponseItem>> {
+    suspend fun getFlowOfApiResponseItemsFromDb(date: String?): Flow<List<ApiResponseItemWithDate>> {
 
         if (date == null) {
             val currentDateTime = getCurrentDate().toReadableDate()
@@ -34,7 +35,7 @@ constructor(
         }
 
 
-        return dao.getAllApiResponseItemsFromDb()
+        return dao.getApiResponseItemsWithDatesFromDb()
     }
 
     fun getCurrentDate(): LocalDate {
@@ -52,9 +53,7 @@ constructor(
     }
 
     private suspend fun getResponseFromApiAndInsertIntoDb(date: String) {
-        apiService.getSchedule(date).forEach { apiResponseItem ->
-            dao.insertApiResponseItemIntoDb(apiResponseItem)
-        }
+        dao.insertApiResponseItemWithDateIntoDb(ApiResponseItemWithDate(date, apiService.getSchedule(date)))
     }
 
 }
