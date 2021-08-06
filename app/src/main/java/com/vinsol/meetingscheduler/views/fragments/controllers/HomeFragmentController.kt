@@ -5,6 +5,7 @@ import android.util.Log
 import com.airbnb.epoxy.EpoxyController
 import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.ItemApiresponseBinding
+import com.vinsol.meetingscheduler.databinding.NoItemsScreenBinding
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.ViewBindingKotlinModel
@@ -39,12 +40,17 @@ class HomeFragmentController: EpoxyController() {
         }
 
         listOfApiResponseItems.forEach {
+
+            if (it.apiResponseItem.isNullOrEmpty()) {
+                NoItemFoundModel().id("no_item").addTo(this)
+                return
+            }
+
             it.apiResponseItem.sortedBy { item ->
                 item.startTime.replace(":", "").toInt()
             }.forEach { apiResponseItem ->
                 ItemApiResponseModel(apiResponseItem.startTime, apiResponseItem.endTime, apiResponseItem.description).id(it.date).addTo(this)
             }
-
         }
     }
 
@@ -66,5 +72,11 @@ class HomeFragmentController: EpoxyController() {
             itemDescription.text = description
         }
 
+    }
+
+    class NoItemFoundModel: ViewBindingKotlinModel<NoItemsScreenBinding>(R.layout.no_items_screen) {
+        override fun NoItemsScreenBinding.bind() {
+            // nothing to do
+        }
     }
 }
