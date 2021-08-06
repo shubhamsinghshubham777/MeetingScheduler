@@ -111,6 +111,10 @@ class ScheduleMeetingFragmentController(
             }
         }
 
+        override fun getSpanSize(totalSpanCount: Int, position: Int, itemCount: Int): Int {
+            return totalSpanCount
+        }
+
     }
 
     companion object {
