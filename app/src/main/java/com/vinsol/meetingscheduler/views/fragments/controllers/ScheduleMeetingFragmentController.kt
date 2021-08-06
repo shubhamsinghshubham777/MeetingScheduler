@@ -105,9 +105,12 @@ class ScheduleMeetingFragmentController(
                 }
             }
 
-            meetingFragDescriptionEt.doOnTextChanged { text, _, _, _ ->
-                userDescription = text.toString()
-                scheduleMeetingClickEvents.getUserDescriptionValue(userDescription)
+            meetingFragDescriptionEt.apply {
+                setText("")
+                doOnTextChanged { text, _, _, _ ->
+                    userDescription = text.toString()
+                    scheduleMeetingClickEvents.getUserDescriptionValue(userDescription)
+                }
             }
         }
 

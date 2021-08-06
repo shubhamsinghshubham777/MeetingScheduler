@@ -125,6 +125,7 @@ class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting)
         if (localUserDescription.isNotBlank()) {
             mainViewModel.updateApiResponseItemWithDateIntoDb(newItem)
             requireActivity().shortSimpleToast("Task added successfully!")
+            localUserDescription = ""
             findNavController().navigateUp()
         }
     }
