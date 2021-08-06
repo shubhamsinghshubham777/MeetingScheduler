@@ -13,7 +13,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="4dp"
-        android:textSize="@dimen/time_text_size"
+        android:textSize="@dimen/time_text_size_landscape"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="16dp"
-        android:textSize="@dimen/time_text_size"
+        android:textSize="@dimen/time_text_size_landscape"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/item_startTime_tv"
@@ -38,7 +38,7 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="54dp"
+        android:layout_width="60dp"
         android:layout_height="1dp"
         android:background="@color/divider_color"
         app:layout_constraintBottom_toTopOf="@+id/item_endTime_tv"
@@ -105,5 +105,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.12" />
+        app:layout_constraintGuide_percent="0.13" />
 </androidx.constraintlayout.widget.ConstraintLayout>
