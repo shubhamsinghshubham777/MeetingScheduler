@@ -117,9 +117,6 @@ dependencies {
     //Logging Interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:$loggingInterceptor_version")
 
-    //JavaTime backport
-    implementation ("com.jakewharton.threetenabp:threetenabp:$javaTimeBackport_version")
-
     //Epoxy Airbnb
     implementation "com.airbnb.android:epoxy:$epoxyVersion"
     kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"

@@ -1,7 +1,6 @@
 package com.vinsol.meetingscheduler.views.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.viewbinding.library.fragment.viewBinding
 import androidx.navigation.fragment.findNavController

@@ -7,13 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.vinsol.meetingscheduler.data.repositories.MainRepository
-import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.toReadableDate
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.joda.time.LocalDate
 import javax.inject.Inject
@@ -78,8 +75,6 @@ constructor(
     suspend fun getSingleItemForSelectedDate(date: String) = repository.getSingleItemForSelectedDate(date)
 
     suspend fun updateApiResponseItemWithDateIntoDb(apiResponseItemWithDate: ApiResponseItemWithDate) = repository.updateApiResponseItemWithDateIntoDb(apiResponseItemWithDate)
-
-    suspend fun fetchItemsForSelectedDate(date: String) = repository.getItemsForSelectedDate(date)
 
     suspend fun insertApiResponseItemWithDateIntoDb(apiResponseItemWithDate: ApiResponseItemWithDate) = repository.insertApiResponseItemWithDateIntoDb(apiResponseItemWithDate)
 

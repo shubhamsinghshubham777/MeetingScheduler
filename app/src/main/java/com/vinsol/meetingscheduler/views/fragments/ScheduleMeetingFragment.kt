@@ -7,9 +7,6 @@ import android.viewbinding.library.fragment.viewBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.vinsol.meetingscheduler.R
@@ -24,7 +21,6 @@ import com.vinsol.meetingscheduler.views.fragments.controllers.ScheduleMeetingFr
 import com.vinsol.meetingscheduler.views.fragments.interfaces.ScheduleMeetingClickEvents
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
 import java.util.*
 
 class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting), ScheduleMeetingClickEvents {

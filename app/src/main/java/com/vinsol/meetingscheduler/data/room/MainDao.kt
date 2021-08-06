@@ -1,7 +1,6 @@
 package com.vinsol.meetingscheduler.data.room
 
 import androidx.room.*
-import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import kotlinx.coroutines.flow.Flow
 

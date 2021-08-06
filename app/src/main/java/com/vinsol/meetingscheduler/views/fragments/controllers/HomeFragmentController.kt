@@ -1,12 +1,10 @@
 package com.vinsol.meetingscheduler.views.fragments.controllers
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.airbnb.epoxy.EpoxyController
 import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.ItemApiresponseBinding
 import com.vinsol.meetingscheduler.databinding.NoItemsScreenBinding
-import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.ViewBindingKotlinModel
 import com.vinsol.meetingscheduler.views.common.LoadingScreenModel
