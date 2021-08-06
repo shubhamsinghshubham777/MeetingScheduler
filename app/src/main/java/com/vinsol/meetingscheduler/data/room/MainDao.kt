@@ -18,7 +18,7 @@ interface MainDao {
     fun getItemsForSelectedDate(date: String): Flow<List<ApiResponseItemWithDate>>
 
     @Query("SELECT * FROM apiresponseitem_with_date_table WHERE :date=date LIMIT 1")
-    suspend fun getSingleItemForSelectedDate(date: String): ApiResponseItemWithDate
+    suspend fun getSingleItemForSelectedDate(date: String): ApiResponseItemWithDate?
 
     @Update
     suspend fun updateApiResponseItemWithDateIntoDb(apiResponseItemWithDate: ApiResponseItemWithDate)

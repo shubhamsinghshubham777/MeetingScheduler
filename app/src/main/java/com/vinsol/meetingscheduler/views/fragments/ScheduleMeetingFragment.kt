@@ -17,9 +17,12 @@ import com.vinsol.meetingscheduler.databinding.FragmentScheduleMeetingBinding
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
 import com.vinsol.meetingscheduler.utils.fromTimeToInt
+import com.vinsol.meetingscheduler.utils.longSimpleToast
 import com.vinsol.meetingscheduler.utils.shortSimpleToast
 import com.vinsol.meetingscheduler.views.fragments.controllers.ScheduleMeetingFragmentController
 import com.vinsol.meetingscheduler.views.fragments.interfaces.ScheduleMeetingClickEvents
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -116,15 +119,31 @@ class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting)
         lifecycleScope.launchWhenResumed {
             checkIfTimeSlotExists(epoxyController)?.let {
                 if (it) {
-                    val updatedItem = mainViewModel.getSingleItemForSelectedDate(epoxyController.userPickedDate).copy()
-                    val updatedList = updatedItem.apiResponseItem.toMutableList()
-                    val newApiResponseItem = ApiResponseItem(localUserDescription, epoxyController.userPickedEndTime, listOf(), epoxyController.userPickedStartTime)
-                    updatedList.add(newApiResponseItem)
-                    val newItem = ApiResponseItemWithDate(updatedItem.date, updatedList.toList())
-                    if (localUserDescription.isNotBlank()) {
-                        mainViewModel.updateApiResponseItemWithDateIntoDb(newItem)
-                        requireActivity().shortSimpleToast("Task added successfully!")
-                        findNavController().navigateUp()
+                    val updatedItem = mainViewModel.getSingleItemForSelectedDate(epoxyController.userPickedDate)?.copy()
+                    updatedItem?.let { updateItemNotNull ->
+                        val updatedList = updateItemNotNull.apiResponseItem.toMutableList()
+                        val newApiResponseItem = ApiResponseItem(localUserDescription, epoxyController.userPickedEndTime, listOf(), epoxyController.userPickedStartTime)
+                        updatedList.add(newApiResponseItem)
+                        val newItem = ApiResponseItemWithDate(updateItemNotNull.date, updatedList.toList())
+                        if (localUserDescription.isNotBlank()) {
+                            mainViewModel.updateApiResponseItemWithDateIntoDb(newItem)
+                            requireActivity().shortSimpleToast("Task added successfully!")
+                            findNavController().navigateUp()
+                        }
+                    } ?: run {
+                        withContext(Dispatchers.Main) {
+                            requireActivity().longSimpleToast("Couldn't find anything for date ${epoxyController.userPickedDate} therefore adding new task!")
+                        }
+
+                        val listOfApiResponseItem = listOf(
+                            ApiResponseItem(localUserDescription, epoxyController.userPickedEndTime, listOf(), epoxyController.userPickedStartTime)
+                        )
+                        val newItem = ApiResponseItemWithDate(epoxyController.userPickedDate, listOfApiResponseItem)
+                        if (localUserDescription.isNotBlank()) {
+                            mainViewModel.insertApiResponseItemWithDateIntoDb(newItem)
+                            requireActivity().shortSimpleToast("Task added successfully!")
+                            findNavController().navigateUp()
+                        }
                     }
                 } else {
                     requireActivity().shortSimpleToast("Slot not available!")
@@ -135,7 +154,7 @@ class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting)
 
     override suspend fun checkIfTimeSlotExists(epoxyController: ScheduleMeetingFragmentController): Boolean? {
 
-        mainViewModel.getSingleItemForSelectedDate(epoxyController.userPickedDate).apiResponseItem.forEach { item ->
+        mainViewModel.getSingleItemForSelectedDate(epoxyController.userPickedDate)?.apiResponseItem?.forEach { item ->
             val userPickedStartTimeInt = epoxyController.userPickedStartTime.fromTimeToInt()
             val userPickedEndTimeInt = epoxyController.userPickedEndTime.fromTimeToInt()
             val itemStartTimeInt = item.startTime.fromTimeToInt()
