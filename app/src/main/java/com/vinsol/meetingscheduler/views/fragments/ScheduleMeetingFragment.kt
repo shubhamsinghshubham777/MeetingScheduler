@@ -16,6 +16,7 @@ import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.FragmentScheduleMeetingBinding
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItem
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
+import com.vinsol.meetingscheduler.utils.fromMillisToReadableDate
 import com.vinsol.meetingscheduler.utils.fromTimeToInt
 import com.vinsol.meetingscheduler.utils.longSimpleToast
 import com.vinsol.meetingscheduler.utils.shortSimpleToast
@@ -55,26 +56,10 @@ class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting)
     }
 
     override fun showDatePicker(epoxyController: ScheduleMeetingFragmentController){
-
-        val tag = "MaterialDatePicker"
-
-        val constraints = CalendarConstraints.Builder()
-            .setValidator(DateValidatorPointForward.now())
-            .build()
-
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select meeting date")
-            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-            .setCalendarConstraints(constraints)
-            .build()
-
-        datePicker.show(childFragmentManager, tag)
+        datePicker.show(childFragmentManager, myTag)
 
         datePicker.addOnPositiveButtonClickListener {
-            val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.US)
-            lifecycleScope.launchWhenResumed {
-                epoxyController.userPickedDate = formatter.format(Date(it))
-            }
+            epoxyController.userPickedDate = it.fromMillisToReadableDate()
         }
     }
 

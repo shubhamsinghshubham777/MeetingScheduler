@@ -5,6 +5,8 @@ import android.widget.Toast
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonReader
 import org.joda.time.LocalDate
+import java.text.SimpleDateFormat
+import java.util.*
 
 object NullToEmptyStringAdapter {
     @FromJson
@@ -30,3 +32,12 @@ fun Context.longSimpleToast(msg: String) {
 }
 
 fun String.fromTimeToInt() = replace(":", "").toInt()
+
+fun Long.fromMillisToReadableDate(): String {
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+    return formatter.format(Date(this))
+}
+
+fun Long.fromMillisToLocalDate(): LocalDate {
+    return LocalDate(this)
+}

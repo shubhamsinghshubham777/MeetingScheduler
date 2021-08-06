@@ -1,12 +1,15 @@
 package com.vinsol.meetingscheduler.views.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.viewbinding.library.fragment.viewBinding
 import androidx.navigation.fragment.findNavController
 import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.FragmentHomeBinding
 import com.vinsol.meetingscheduler.models.apiresponse.ApiResponseItemWithDate
+import com.vinsol.meetingscheduler.utils.fromMillisToLocalDate
+import com.vinsol.meetingscheduler.utils.fromMillisToReadableDate
 import com.vinsol.meetingscheduler.utils.toReadableDate
 import com.vinsol.meetingscheduler.viewmodels.MainViewModel
 import com.vinsol.meetingscheduler.views.fragments.controllers.HomeFragmentController
@@ -39,6 +42,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 homeFragScheduleBtn.setOnClickListener {
                     val action = HomeFragmentDirections.actionHomeFragmentToScheduleMeetingFragment()
                     findNavController().navigate(action)
+                }
+                homeFragTopBarDateTv.setOnClickListener {
+                    datePicker.show(childFragmentManager, myTag)
+                    datePicker.addOnPositiveButtonClickListener {
+                        setCustomDate(it.fromMillisToLocalDate())
+                        getItemsForSelectedDate(it.fromMillisToReadableDate())
+                    }
                 }
             }
 

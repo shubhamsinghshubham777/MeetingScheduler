@@ -45,6 +45,10 @@ constructor(
         return currentLocalDate
     }
 
+    fun setCustomDate(date: LocalDate) {
+        _currentLocalDate.postValue(date)
+    }
+
     fun incrementDate(localDate: LocalDate): String {
         val incrementedDate = repository.incrementDate(localDate)
         _currentLocalDate.postValue(incrementedDate)
