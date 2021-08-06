@@ -7,6 +7,7 @@ import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.ScheduleMeetingDescriptionItemBinding
 import com.vinsol.meetingscheduler.databinding.ScheduleMeetingSelectableItemBinding
 import com.vinsol.meetingscheduler.utils.ViewBindingKotlinModel
+import com.vinsol.meetingscheduler.utils.closeKeyboard
 import com.vinsol.meetingscheduler.utils.shortSimpleToast
 import com.vinsol.meetingscheduler.views.fragments.interfaces.ScheduleMeetingClickEvents
 import kotlinx.coroutines.CoroutineScope
@@ -94,6 +95,8 @@ class ScheduleMeetingFragmentController(
     ) : ViewBindingKotlinModel<ScheduleMeetingDescriptionItemBinding>(R.layout.schedule_meeting_description_item) {
         override fun ScheduleMeetingDescriptionItemBinding.bind() {
             meetingFragSubmitBtn.setOnClickListener {
+
+                it.closeKeyboard(root.context)
 
                 if (userPickedDate.isBlank() || userPickedStartTime.isBlank() || userPickedEndTime.isBlank() || userDescription.isBlank()) {
                     root.context.shortSimpleToast("Please fill all details first!")

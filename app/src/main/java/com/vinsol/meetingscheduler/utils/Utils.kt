@@ -1,6 +1,9 @@
 package com.vinsol.meetingscheduler.utils
 
+import android.app.Activity
 import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonReader
@@ -40,4 +43,10 @@ fun Long.fromMillisToReadableDate(): String {
 
 fun Long.fromMillisToLocalDate(): LocalDate {
     return LocalDate(this)
+}
+
+fun View.closeKeyboard(context: Context) {
+    val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    requestFocus()
+    inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
 }
