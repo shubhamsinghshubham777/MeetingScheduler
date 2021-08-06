@@ -47,7 +47,7 @@ class HomeFragmentController: EpoxyController() {
             it.apiResponseItem.sortedBy { item ->
                 item.startTime.replace(":", "").toInt()
             }.forEach { apiResponseItem ->
-                ItemApiResponseModel(apiResponseItem.startTime, apiResponseItem.endTime, apiResponseItem.description).id(it.date).addTo(this)
+                ItemApiResponseModel(apiResponseItem.startTime, apiResponseItem.endTime, apiResponseItem.description, apiResponseItem.participants).id(it.date).addTo(this)
             }
         }
     }
@@ -56,6 +56,7 @@ class HomeFragmentController: EpoxyController() {
         val startTime: String,
         val endTime: String,
         val description: String,
+        val participants: List<String>
     ): ViewBindingKotlinModel<ItemApiresponseBinding>(R.layout.item_apiresponse) {
         @SuppressLint("SetTextI18n")
         override fun ItemApiresponseBinding.bind() {
@@ -65,9 +66,12 @@ class HomeFragmentController: EpoxyController() {
             val startTimeAmOrPm = if (startTime.substring(0,indexOfStartTimeColon).toInt() < 12) { "AM" } else { "PM" }
             val endTimeAmOrPm = if (endTime.substring(0,indexOfEndTimeColon).toInt() < 12) { "AM" } else { "PM" }
 
+            val stringOfParticipants = participants.joinToString { it }
+
             itemStartTimeTv.text = "$startTime$startTimeAmOrPm"
             itemEndTimeTv.text = "$endTime$endTimeAmOrPm"
             itemDescription.text = description
+            itemParticipants?.text = stringOfParticipants
         }
 
     }
