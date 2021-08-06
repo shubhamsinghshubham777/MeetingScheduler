@@ -6,8 +6,8 @@ interface ScheduleMeetingClickEvents {
 
     fun showDatePicker(epoxyController: ScheduleMeetingFragmentController)
     fun showTimePicker(whichTime: String, epoxyController: ScheduleMeetingFragmentController)
-    fun submitButtonOnClicked(epoxyController: ScheduleMeetingFragmentController)
-    suspend fun checkIfTimeSlotExists(epoxyController: ScheduleMeetingFragmentController): Boolean?
+    fun submitButtonOnClicked(epoxyController: ScheduleMeetingFragmentController, ifSlotExists: Boolean)
+    suspend fun checkIfTimeSlotExists(epoxyController: ScheduleMeetingFragmentController)
     fun getUserDescriptionValue(description: String)
 
 }

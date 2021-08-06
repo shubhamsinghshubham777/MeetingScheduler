@@ -115,44 +115,66 @@ class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting)
         }
     }
 
-    override fun submitButtonOnClicked(epoxyController: ScheduleMeetingFragmentController) {
+    override fun submitButtonOnClicked(epoxyController: ScheduleMeetingFragmentController, ifSlotExists: Boolean) {
         lifecycleScope.launchWhenResumed {
-            checkIfTimeSlotExists(epoxyController)?.let {
-                if (it) {
-                    val updatedItem = mainViewModel.getSingleItemForSelectedDate(epoxyController.userPickedDate)?.copy()
-                    updatedItem?.let { updateItemNotNull ->
-                        val updatedList = updateItemNotNull.apiResponseItem.toMutableList()
-                        val newApiResponseItem = ApiResponseItem(localUserDescription, epoxyController.userPickedEndTime, listOf(), epoxyController.userPickedStartTime)
-                        updatedList.add(newApiResponseItem)
-                        val newItem = ApiResponseItemWithDate(updateItemNotNull.date, updatedList.toList())
-                        if (localUserDescription.isNotBlank()) {
-                            mainViewModel.updateApiResponseItemWithDateIntoDb(newItem)
-                            requireActivity().shortSimpleToast("Task added successfully!")
-                            findNavController().navigateUp()
-                        }
-                    } ?: run {
-                        withContext(Dispatchers.Main) {
-                            requireActivity().longSimpleToast("Couldn't find anything for date ${epoxyController.userPickedDate} therefore adding new task!")
-                        }
-
-                        val listOfApiResponseItem = listOf(
-                            ApiResponseItem(localUserDescription, epoxyController.userPickedEndTime, listOf(), epoxyController.userPickedStartTime)
-                        )
-                        val newItem = ApiResponseItemWithDate(epoxyController.userPickedDate, listOfApiResponseItem)
-                        if (localUserDescription.isNotBlank()) {
-                            mainViewModel.insertApiResponseItemWithDateIntoDb(newItem)
-                            requireActivity().shortSimpleToast("Task added successfully!")
-                            findNavController().navigateUp()
-                        }
-                    }
-                } else {
-                    requireActivity().shortSimpleToast("Slot not available!")
-                }
+            if (ifSlotExists) {
+                val updatedItem = mainViewModel.getSingleItemForSelectedDate(epoxyController.userPickedDate)?.copy()
+                updatedItem?.let { updateItemNotNull ->
+                    updateExistingTaskList(updateItemNotNull, epoxyController)
+                } ?: insertNewTaskList(epoxyController)
+            } else {
+                requireActivity().shortSimpleToast("Slot not available!")
             }
         }
     }
 
-    override suspend fun checkIfTimeSlotExists(epoxyController: ScheduleMeetingFragmentController): Boolean? {
+    private suspend fun updateExistingTaskList(
+        updateItemNotNull: ApiResponseItemWithDate,
+        epoxyController: ScheduleMeetingFragmentController
+    ) {
+        val updatedList = updateItemNotNull.apiResponseItem.toMutableList()
+        val newApiResponseItem = ApiResponseItem(
+            localUserDescription,
+            epoxyController.userPickedEndTime,
+            listOf(),
+            epoxyController.userPickedStartTime
+        )
+        updatedList.add(newApiResponseItem)
+        val newItem = ApiResponseItemWithDate(updateItemNotNull.date, updatedList.toList())
+        if (localUserDescription.isNotBlank()) {
+            mainViewModel.updateApiResponseItemWithDateIntoDb(newItem)
+            requireActivity().shortSimpleToast("Task added successfully!")
+            findNavController().navigateUp()
+        }
+    }
+
+    private suspend fun insertNewTaskList(epoxyController: ScheduleMeetingFragmentController) {
+        run {
+            withContext(Dispatchers.Main) {
+                requireActivity().longSimpleToast("No tasks were present for date ${epoxyController.userPickedDate} therefore creating a new task list!")
+            }
+
+            val listOfApiResponseItem = listOf(
+                ApiResponseItem(
+                    localUserDescription,
+                    epoxyController.userPickedEndTime,
+                    listOf(),
+                    epoxyController.userPickedStartTime
+                )
+            )
+            val newItem =
+                ApiResponseItemWithDate(epoxyController.userPickedDate, listOfApiResponseItem)
+            if (localUserDescription.isNotBlank()) {
+                mainViewModel.insertApiResponseItemWithDateIntoDb(newItem)
+                requireActivity().shortSimpleToast("Task added successfully!")
+                findNavController().navigateUp()
+            }
+        }
+    }
+
+    override suspend fun checkIfTimeSlotExists(epoxyController: ScheduleMeetingFragmentController) {
+
+        var doesSlotExist = true
 
         mainViewModel.getSingleItemForSelectedDate(epoxyController.userPickedDate)?.apiResponseItem?.forEach { item ->
             val userPickedStartTimeInt = epoxyController.userPickedStartTime.fromTimeToInt()
@@ -163,10 +185,12 @@ class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting)
             Log.d(TAG, "checkIfTimeSlotExists: $userPickedStartTimeInt\t$userPickedEndTimeInt\t$itemStartTimeInt\t$itemEndTimeInt")
 
             if (userPickedStartTimeInt in itemStartTimeInt until(itemEndTimeInt) || userPickedEndTimeInt in itemStartTimeInt until(itemEndTimeInt)) {
-                return false
+                doesSlotExist = false
+                submitButtonOnClicked(epoxyController, doesSlotExist)
+                return
             }
         }
-        return true
+        if (doesSlotExist) { submitButtonOnClicked(epoxyController, true) }
     }
 
     override fun getUserDescriptionValue(description: String) {

@@ -8,6 +8,9 @@ import com.vinsol.meetingscheduler.databinding.ScheduleMeetingDescriptionItemBin
 import com.vinsol.meetingscheduler.databinding.ScheduleMeetingSelectableItemBinding
 import com.vinsol.meetingscheduler.utils.ViewBindingKotlinModel
 import com.vinsol.meetingscheduler.views.fragments.interfaces.ScheduleMeetingClickEvents
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ScheduleMeetingFragmentController(
     private val scheduleMeetingClickEvents: ScheduleMeetingClickEvents
@@ -87,7 +90,9 @@ class ScheduleMeetingFragmentController(
     ) : ViewBindingKotlinModel<ScheduleMeetingDescriptionItemBinding>(R.layout.schedule_meeting_description_item) {
         override fun ScheduleMeetingDescriptionItemBinding.bind() {
             meetingFragSubmitBtn.setOnClickListener {
-                scheduleMeetingClickEvents.submitButtonOnClicked(scheduleMeetingFragmentController)
+                CoroutineScope(Dispatchers.IO).launch {
+                    scheduleMeetingClickEvents.checkIfTimeSlotExists(scheduleMeetingFragmentController)
+                }
             }
 
             meetingFragDescriptionEt.doOnTextChanged { text, _, _, _ ->

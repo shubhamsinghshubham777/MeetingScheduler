@@ -25,7 +25,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         mainViewModel.apply {
-            getItemsForSelectedDate(getCurrentDate().toReadableDate())
+
+            currentLocalDate.value?.let {
+                getItemsForSelectedDate(it.toReadableDate())
+            } ?: getItemsForSelectedDate(getCurrentDate().toReadableDate())
 
             val epoxyController = HomeFragmentController()
 
