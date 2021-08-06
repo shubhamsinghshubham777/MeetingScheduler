@@ -7,6 +7,7 @@ import com.vinsol.meetingscheduler.R
 import com.vinsol.meetingscheduler.databinding.ScheduleMeetingDescriptionItemBinding
 import com.vinsol.meetingscheduler.databinding.ScheduleMeetingSelectableItemBinding
 import com.vinsol.meetingscheduler.utils.ViewBindingKotlinModel
+import com.vinsol.meetingscheduler.utils.shortSimpleToast
 import com.vinsol.meetingscheduler.views.fragments.interfaces.ScheduleMeetingClickEvents
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +53,7 @@ class ScheduleMeetingFragmentController(
         MeetingSelectableItem("Meeting Date", scheduleMeetingClickEvents, "meeting_date", userPickedDate, this).id("meeting_date").addTo(this)
         MeetingSelectableItem("Start Time", scheduleMeetingClickEvents, "start_time", userPickedStartTime, this).id("start_time").addTo(this)
         MeetingSelectableItem("End Time", scheduleMeetingClickEvents, "end_time", userPickedEndTime, this).id("end_time").addTo(this)
-        MeetingDescriptionItem(userDescription, scheduleMeetingClickEvents, this).id("description_with_button").addTo(this)
+        MeetingDescriptionItem(userDescription, scheduleMeetingClickEvents, this, userPickedDate, userPickedStartTime, userPickedEndTime).id("description_with_button").addTo(this)
     }
 
     data class MeetingSelectableItem(
@@ -86,10 +87,19 @@ class ScheduleMeetingFragmentController(
     data class MeetingDescriptionItem(
         private var userDescription: String,
         private val scheduleMeetingClickEvents: ScheduleMeetingClickEvents,
-        private val scheduleMeetingFragmentController: ScheduleMeetingFragmentController
+        private val scheduleMeetingFragmentController: ScheduleMeetingFragmentController,
+        val userPickedDate: String,
+        val userPickedStartTime: String,
+        val userPickedEndTime: String,
     ) : ViewBindingKotlinModel<ScheduleMeetingDescriptionItemBinding>(R.layout.schedule_meeting_description_item) {
         override fun ScheduleMeetingDescriptionItemBinding.bind() {
             meetingFragSubmitBtn.setOnClickListener {
+
+                if (userPickedDate.isBlank() || userPickedStartTime.isBlank() || userPickedEndTime.isBlank() || userDescription.isBlank()) {
+                    root.context.shortSimpleToast("Please fill all details first!")
+                    return@setOnClickListener
+                }
+
                 CoroutineScope(Dispatchers.IO).launch {
                     scheduleMeetingClickEvents.checkIfTimeSlotExists(scheduleMeetingFragmentController)
                 }

@@ -165,7 +165,7 @@ class ScheduleMeetingFragment : BaseFragment(R.layout.fragment_schedule_meeting)
 
             Log.d(TAG, "checkIfTimeSlotExists: $userPickedStartTimeInt\t$userPickedEndTimeInt\t$itemStartTimeInt\t$itemEndTimeInt")
 
-            if (userPickedStartTimeInt in itemStartTimeInt until(itemEndTimeInt) || userPickedEndTimeInt in itemStartTimeInt until(itemEndTimeInt)) {
+            if (userPickedStartTimeInt in itemStartTimeInt until(itemEndTimeInt+1) || userPickedEndTimeInt in itemStartTimeInt until(itemEndTimeInt+1)) {
                 doesSlotExist = false
                 submitButtonOnClicked(epoxyController, doesSlotExist)
                 return
